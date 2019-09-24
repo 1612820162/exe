@@ -11,6 +11,6 @@ public interface MachineMapper {
     //删除表中所有信息
     int deleteAll();
     //根据回路和地址查询
-    Machine seleteByCC(String circuit, String code);
+    Machine getByCC(String circuit, String code);
 
 }

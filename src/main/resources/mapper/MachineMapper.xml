@@ -3,7 +3,7 @@
 <mapper namespace="com.example.exe.dao.MachineMapper" >
     <resultMap id="MachineResultMap" type="com.example.exe.pojo.Machine" >
         <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="circuit" property="citcuit" jdbcType="VARCHAR"/>
+        <result column="circuit" property="circuit" jdbcType="VARCHAR"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="floor" property="floor" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="VARCHAR"/>

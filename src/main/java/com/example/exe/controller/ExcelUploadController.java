@@ -57,7 +57,7 @@ public class ExcelUploadController {
         String str3 = Integer.toString(n3, 10);
         switch (string1){
             case "01":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -66,7 +66,7 @@ public class ExcelUploadController {
                     break;
                 }
             case "02":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -75,7 +75,7 @@ public class ExcelUploadController {
                     break;
                 }
             case "05":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -84,7 +84,7 @@ public class ExcelUploadController {
                     break;
                 }
             case "09":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -93,7 +93,7 @@ public class ExcelUploadController {
                     break;
                 }
             case "0B":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -121,7 +121,7 @@ public class ExcelUploadController {
                 reaction="消音";
                 break;
             case "40":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;
@@ -130,7 +130,7 @@ public class ExcelUploadController {
                     break;
                 }
             case "44":
-                machine = machineService.seleteByCC(str2, str3);
+                machine = machineService.getByCC(str2, str3);
                 if (machine==null){
                     reaction="查询信息不存在";
                     break;

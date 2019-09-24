@@ -21,7 +21,7 @@ public class MachineService {
         return machineMapper.deleteAll();
     }
     //根据回路和地址查询
-    public Machine seleteByCC(String circuit, String code){
-        return machineMapper.seleteByCC(circuit,code);
+    public Machine getByCC(String circuit, String code){
+        return machineMapper.getByCC(circuit,code);
     }
 }
