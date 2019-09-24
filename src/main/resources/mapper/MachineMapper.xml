@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.exe.dao.MachineMapper" >
+    <resultMap id="MachineResultMap" type="com.example.exe.pojo.Machine" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="circuit" property="citcuit" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="floor" property="floor" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="message" property="message" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="machineColumns" >
+        id,
+        circuit,
+        code,
+        floor,
+        type,
+        address,
+        message
+    </sql>
+
+    <insert id="insert" parameterType="com.example.exe.pojo.Machine" >
+        insert into
+        machine
+        (id,circuit,code,floor,type,address,message)
+        values
+        (#{id},#{circuit},#{code},#{floor},#{type},#{address},#{message})
+    </insert>
+
+    <delete id="deleteAll" >
+        delete from
+        machine
+    </delete>
+
+    <select id="getByCC" resultMap="MachineResultMap" >
+        select
+        <include refid="machineColumns"/>
+        from machine
+        where circuit = #{circuit} and code = #{code}
+    </select>
+
+<!--    <select id="getAll" resultMap="MouseResultMap" >-->
+<!--        select-->
+<!--        <include refid="mouseColumns"/>-->
+<!--        from mouse-->
+<!--    </select>-->
+
+<!--    <select id="getByBrand" resultMap="MouseResultMap" >-->
+<!--        select-->
+<!--        <include refid="mouseColumns"/>-->
+<!--        from mouse-->
+<!--        where brand = #{brand}-->
+<!--    </select>-->
+
+
+<!--    <select id="getByHand" resultMap="MouseResultMap" >-->
+<!--        select-->
+<!--        <include refid="mouseColumns"/>-->
+<!--        from mouse-->
+<!--        where hand = #{hand}-->
+<!--    </select>-->
+
+<!--    <select id="getByEsports" resultMap="MouseResultMap" >-->
+<!--        select-->
+<!--        <include refid="mouseColumns"/>-->
+<!--        from mouse-->
+<!--        where esports = #{esports}-->
+<!--    </select>-->
+
+<!--    <select id="getByWord" resultMap="MouseResultMap" >-->
+<!--        select-->
+<!--        *-->
+<!--        from mouse-->
+<!--        <where>-->
+<!--            <if test="word != null">-->
+<!--                model like CONCAT(CONCAT('%', #{word}),'%')-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+
+
+    <!--    <update id="update" parameterType="com.example.demo0.pojo.User" >-->
+    <!--        update-->
+    <!--        users-->
+    <!--        <set>-->
+    <!--            <if test="id!=null" >-->
+    <!--                id=#{id},-->
+    <!--            </if>-->
+    <!--            <if test="userName!=null" >-->
+    <!--                userName=#{userName},-->
+    <!--            </if>-->
+    <!--            <if test="password!=null" >-->
+    <!--                password=#{password},-->
+    <!--            </if>-->
+    <!--            <if test="phone!=null" >-->
+    <!--                phone=#{phone},-->
+    <!--            </if>-->
+    <!--            <if test="name != null" >-->
+    <!--                name=#{name},-->
+    <!--            </if>-->
+    <!--            <if test="sex!=null" >-->
+    <!--                sex=#{sex},-->
+    <!--            </if>-->
+    <!--            <if test="age!=null" >-->
+    <!--                age=#{age}-->
+    <!--            </if>-->
+    <!--        </set>-->
+    <!--        where id=#{id}-->
+    <!--    </update>-->
+
+    <!--    <delete id="delete" parameterType="java.lang.String" >-->
+    <!--        delete from-->
+    <!--        users-->
+    <!--        where-->
+    <!--        userName =#{userName}-->
+    <!--    </delete>-->
+
+
+</mapper>

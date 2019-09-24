@@ -1,75 +1,149 @@
 package com.example.exe.controller;
 
-import org.apache.el.stream.Stream;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Row;
+import com.example.exe.pojo.Machine;
+import com.example.exe.service.MachineService;
+import com.example.exe.tomysql.GetExcel;
+import com.example.exe.utils.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @RestController
 @RequestMapping("/excel")
 public class ExcelUploadController {
 
+    @Autowired
+    private MachineService machineService;
+    Util util;
+
     @RequestMapping("/upload")
-    public String export(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public String export(@RequestParam(value = "file") MultipartFile file) {
+        GetExcel getExcel =new GetExcel();
+        util =new Util();
+        List<List<Object>> list=null;
         try {
-            InputStream inputStream = request.getInputStream();
+            InputStream inputStream = file.getInputStream();
+            list= getExcel.getBankListByExcel(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        List<Machine> machineList= util.toMachine(list);
+        for (int i=0;i<machineList.size();i++){
+            int isOk=machineService.insert(machineList.get(i));
+        }
+        System.out.println(machineList.size());
         return "上传成功";
     }
+
+    //返回前端输入指令对应的命令
+    @RequestMapping("/react")
+    public String react(@RequestParam("command") String command){
+        String string1=command.substring(0,2);
+        String string2=command.substring(2,4);
+        String string3=command.substring(4,6);
+        String reaction="";
+        Machine machine;
+        int n2 = Integer.parseInt(string2, 16);
+        int n3 = Integer.parseInt(string3, 16);
+        String str2 = Integer.toString(n2, 10);
+        String str3 = Integer.toString(n3, 10);
+        switch (string1){
+            case "01":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="火警：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "02":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="设备故障：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "05":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="设备故障恢复：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "09":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="联动回答：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "0B":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="联动回答消除：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "12":
+                if ("00".equals(string2)){
+                    reaction="主电源正常";
+                    break;
+                }else if ("01".equals(string2)){
+                    reaction="主电源故障";
+                    break;
+                }
+            case "13":
+                if ("00".equals(string2)){
+                    reaction="备电源正常";
+                    break;
+                }else if ("01".equals(string2)){
+                    reaction="备电源故障";
+                    break;
+                }
+            case "30":
+                reaction="消音";
+                break;
+            case "40":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="联动请求：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "44":
+                machine = machineService.seleteByCC(str2, str3);
+                if (machine==null){
+                    reaction="查询信息不存在";
+                    break;
+                }else {
+                    reaction="联动启动：回路"+machine.getCircuit()+"地址"+machine.getCode();
+                    break;
+                }
+            case "50":
+                reaction="设备总复位";
+                break;
+            default:
+                break;
+        }
+        return reaction;
+    }
 }
-
-
-//    @RequestMapping("/upload")
-//    public void uploadExcel(){
-//        System.out.println("nihao");
-
-//        HSSFWorkbook book;
-//        try {
-//            book = new HSSFWorkbook(new FileInputStream("D:/excel/A1区消防设备登记表+.xls"));
-//            HSSFSheet sheet=book.getSheet("表");
-//            //得到表格的第一行
-//            HSSFRow row=sheet.getRow(0);
-//            Iterator<Cell> ite=row.cellIterator();
-//            while(ite.hasNext()){
-//                HSSFCell cell=(HSSFCell)ite.next();
-//                String cname=cell.getStringCellValue();
-//                System.out.print(cname);
-//                System.out.print(",");
-//            }
-//            System.out.println("\n");
-//            System.out.println("---------------------------------------");
-//            //得到表格的其他行，即不包括第一行
-//            Iterator<Row> it= sheet.rowIterator();
-//            while(it.hasNext()){//遍历所有行
-//                row=(HSSFRow)it.next();
-//                ite=row.cellIterator();
-//                while(ite.hasNext()){//遍历当前行的所有列
-//                    HSSFCell cell=(HSSFCell)ite.next();
-//                    String cname=cell.getStringCellValue();
-//                    System.out.print(cname);
-//                    System.out.print(",");
-//                }
-//                System.out.println("\n");
-//            }
-//            book.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//    }
-//}

@@ -7,6 +7,7 @@ public class Machine {
     private String floor;
     private String type;
     private String address;
+    private String message;
 
     public Integer getId() {
         return id;
@@ -54,5 +55,13 @@ public class Machine {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
